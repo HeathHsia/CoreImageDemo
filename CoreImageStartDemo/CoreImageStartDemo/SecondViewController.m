@@ -27,15 +27,9 @@
     CGFloat kHeight = [UIScreen mainScreen].bounds.size.height;
     [UIView animateWithDuration:0.6 animations:^{
         
-        // 通过设置window的bounds 来形成大小的视觉差异
-        //        [UIApplication sharedApplication].delegate.window.center = CGPointMake(kWidth / 2, kHeight / 2);
-        //        [UIApplication sharedApplication].delegate.window.bounds = CGRectMake(0, 0, kWidth - 40, kHeight - 40);
-        
         CGAffineTransform transform = CGAffineTransformIdentity;
         transform = CGAffineTransformMakeScale((kWidth - 40) / kWidth, (kHeight - 40) / kHeight);
-        //        CGAffineTransformScale(transform, (kWidth - 40) / kWidth, (kHeight - 40) / kHeight);
-        //                CGAffineTransformScale(transform, 0.5, 0.5);
-        //        [UIApplication sharedApplication].delegate.window.transform = transform;
+
         self.view.transform = transform;
         
     }];
