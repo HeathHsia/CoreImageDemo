@@ -17,9 +17,6 @@
     
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    CGFloat kWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat kHeight = [UIScreen mainScreen].bounds.size.height;
-    
     
 //    [UIView animateWithDuration:0.6 animations:^{
 //
@@ -37,7 +34,9 @@
 //
 //    }];
     
-   
+    
+    UIImageView *imageV = [[UIImageView alloc] init];
+    imageV.frame = CGRectMake(100, 100, 200, 200);
     NSLog(@"---%@====", [NSDate date]);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // 创建CIImage
@@ -60,30 +59,31 @@
         NSLog(@"---%@====", [NSDate date]);
         
         // 更新UI的时候只能在主线程中使用
-        UIImageView *imageV = [[UIImageView alloc] initWithImage:outImageView];
         
-        imageV.frame = CGRectMake(100, 100, 200, 200);
-        
-        @WeakObj(imageV)
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            @StrongObj(WeakObj)
-            [self.view addSubview:imageV];
-            @WeakObj(StrongObj)
-            [UIView animateWithDuration:0.6 animations:^{
-                
-                
-                CGAffineTransform transform = CGAffineTransformIdentity;
-                transform = CGAffineTransformMakeScale((kWidth - 40) / kWidth, (kHeight - 40) / kHeight);
-
-                        self.view.transform = transform;
-                
-                
-            } completion:^(BOOL finished) {
-                NSLog(@"%.2f, %.2f", imageV.bounds.size.width, WeakObj.bounds.size.height);
-            }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageV.image = outImageView;
         });
+//        @WeakObj(imageV)
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+//            @StrongObj(WeakObj)
+//            [self.view addSubview:imageV];
+//            @WeakObj(StrongObj)
+//            [UIView animateWithDuration:0.6 animations:^{
+//
+//
+//                CGAffineTransform transform = CGAffineTransformIdentity;
+//                transform = CGAffineTransformMakeScale((kWidth - 40) / kWidth, (kHeight - 40) / kHeight);
+//
+//                        self.view.transform = transform;
+//
+//
+//            } completion:^(BOOL finished) {
+//                NSLog(@"%.2f, %.2f", imageV.bounds.size.width, WeakObj.bounds.size.height);
+//            }];
+//        });
     });
+    
+    [self.view addSubview:imageV];
 
 }
 
